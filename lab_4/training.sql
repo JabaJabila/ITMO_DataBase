@@ -106,23 +106,3 @@ WHERE p.ProductID IN
 		WHERE sod2.ProductID = sod.ProductID
 		GROUP BY soh2.CustomerID
 		HAVING COUNT(*) <= 3));
-
--- 9
-SELECT DISTINCT p.ProductID, p.Name
-FROM [Production].[Product] AS p
-WHERE p.ProductID IN
-	(SELECT sod.ProductID
-	FROM [Sales].[SalesOrderDetail] AS sod
-	WHERE sod.SalesOrderID IN
-		(SELECT sod.SalesOrderID
-		FROM [Sales].[SalesOrderDetail] AS sod2
-		WHERE (sod2.SalesOrderID = sod.SalesOrderID) AND (sod2.ProductID = sod.ProductID OR sod2.ProductID IN
-			(SELECT p2.ProductID
-			FROM [Production].[Product] AS p2
-			JOIN [Production].[ProductSubcategory] AS ps
-			ON p2.ProductSubcategoryID = ps.ProductSubcategoryID
-			JOIN [Production].[ProductCategory] AS c
-			ON c.ProductCategoryID = ps.ProductCategoryID
-			))
-		GROUP BY sod.SalesOrderID
-		HAVING COUNT(*) >= 2));
