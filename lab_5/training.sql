@@ -88,7 +88,7 @@ JOIN [Sales].[SalesOrderDetail] AS sod
 ON soh.SalesOrderID = sod.SalesOrderID
 GROUP BY soh.CustomerID, sod.ProductID)
 
-SELECT CustomerID
+SELECT DISTINCT CustomerID
 FROM CustomerBought
 WHERE CustomerID NOT IN (
 	SELECT DISTINCT CustomerID
